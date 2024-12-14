@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attack Dashboard</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e9f2fb;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            padding: 60px;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 60vw;
+        }
+
+        h1 {
+            font-size: 60px;  /* Larger font size */
+            color: #333;
+            margin-bottom: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 buttons per row */
+            gap: 30px;  /* Larger gap between buttons */
+            justify-items: center; /* Center buttons in the container */
+        }
+
+        button {
+            padding: 30px;
+            font-size: 28px;  /* Larger font size */
+            cursor: pointer;
+            border: none;
+            border-radius: 12px;
+            background-color: #34adea;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 80%;  /* Makes buttons responsive within the grid */
+            display: inline-block;
+            text-align: center; /* Center the text */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        button:active {
+            background-color: #004085;
+        }
+
+        /* Adding Mobile Responsiveness */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 48px;  /* Adjusting heading font size for smaller screens */
+            }
+            button {
+                font-size: 22px;  /* Adjusting button text size for mobile */
+                padding: 25px 50px;  /* Adjusting padding */
+                width: 100%;  /* Full width for buttons on smaller screens */
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Attack Dashboard</h1>
+        <form method="post" action="{% url 'execute_attack' %}">
+            {% csrf_token %}
+            <div class="button-container">
+                <button name="attack" value="enumerate">SIP Enumeration</button>
+                <button type="button" onclick="redirectToForm('traffic_capture')">Sniffing Attack</button>
+                <button type="button" onclick="redirectToForm('invite_flood')">INVITE Flooding</button>
+                <button type="button" onclick="redirectToForm('register_flood')">REGISTER Flooding</button>
+                <button type="button" onclick="redirectToForm('spit_attack')">SPIT Attack</button>
+                <button name="attack" value="bye_attack">BYE Attack</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function redirectToForm(attackType) {
+            window.location.href = "{% url 'attack_form' %}?attack=" + attackType;
+        }
+    </script>
+</body>
+</html>

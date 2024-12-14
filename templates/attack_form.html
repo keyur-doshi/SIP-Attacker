@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Attack Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e9f2fb;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            width: 60vw;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        p {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 30px;
+            margin-top: 0;
+        }
+
+        label {
+            font-size: 36px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        input {
+            font-size: 36px;
+            width: 60%;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 3px solid #ccc;
+            text-align: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 36px;
+            cursor: pointer;
+            border: none;
+            border-radius: 12px;
+            background-color: #34adea;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 50%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        button:active {
+            background-color: #004085;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #34adea;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-color: #0056b3;
+        }
+
+        .home-icon {
+            margin-right: 10px;
+            margin-bottom: 10px;
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <a href="{% url 'dashboard' %}" class="home-button">
+        <span class="home-icon">&#8592;</span> 
+        Back To Attack Dashboard
+    </a>
+    <div class="container">
+        <h1>Enter Attack Details for {{ attack }}</h1>
+        
+        <form method="post" action="{% url 'execute_attack' %}">
+            {% csrf_token %}
+            <input type="hidden" name="attack" value="{{ attack }}">
+            
+            <!-- Conditional Fields Based on Attack Type -->
+            {% if attack == 'invite_flood' %}
+                <label for="reqs">Enter number of requests to flood server with:</label>
+                <input type="number" id="reqs" name="reqs" value="100">
+                <p><strong>Recommendation:</strong> Default value is 100 INVITE requests. It is recommended to send less than 1000 requests for testing purposes.</p>
+
+                <label for="username">Enter SIP username of client who will be flooded with INVITE requests:</label>
+                <input type="number" id="username" name="username" value="7001">
+                <p><strong>Recommendation:</strong> Recommended value is '7001' or '7002' since these users actually exist in our SIP server.</p>
+
+            {% elif attack == 'spit_attack' %}
+                <label for="username">Enter SIP username of client who will be victim of SPIT attack:</label>
+                <input type="number" id="username" name="username" value="7001">
+                <p><strong>Recommendation:</strong> Recommended value is '7001' or '7002' since these users actually exist in our SIP server.</p>
+            
+            {% elif attack == 'register_flood' %}
+                <label for="low">Enter lower limit of range of SIP users whose registration request will be sent:</label>
+                <input type="number" id="low" name="low" value="6000">
+
+                <label for="high">Enter higher limit of range of SIP users whose registration request will be sent:</label>
+                <input type="number" id="high" name="high" value="8000">
+                <p><strong>Recommendation:</strong> Recommended range is '6000' to '8000' since this range will also include actually existing users in our SIP server.</p>
+
+            {% elif attack == 'traffic_capture' %}
+                <label for="duration">Enter duration (in seconds) for which you want to sniff on the network and capture packets:</label>
+                <input type="number" id="duration" name="duration" value="60">
+                <p><strong>Recommendation:</strong> Recommended value is '60' seconds since it is sufficient time to capture enough SIP traffic without overloading system.</p>
+            {% endif %}
+
+            <button type="submit">Launch Attack</button>
+        </form>
+    </div>
+</body>
+</html>

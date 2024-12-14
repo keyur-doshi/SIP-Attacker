@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attack Result</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e9f2fb; /* Soft blue background */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            width: 70%;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .scrollable-area {
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 26px;
+            height: 70vh;
+            overflow-y: auto; /* Makes the content scrollable */
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #34adea;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-color: #0056b3;
+        }
+
+        .home-icon {
+            margin-right: 10px;
+            margin-bottom: 10px;
+            font-size: 36px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'dashboard' %}" class="home-button">
+        <span class="home-icon">&#8592;</span> 
+        Back To Attack Dashboard
+    </a>
+    <div class="container">
+        <h1>Attack Result</h1>
+        
+        <div class="scrollable-area">
+            <pre>{{ result }}</pre>
+
+            {% if error %}
+                <p><strong>Errors:</strong></p>
+                <pre>{{ error }}</pre>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
